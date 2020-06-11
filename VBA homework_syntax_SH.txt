@@ -1,0 +1,70 @@
+Sub stock_data()
+
+'Set an initial varialbe for the Ticker
+Dim Ticker As String
+
+'Set Percent_change as variable
+Dim Percent_change As Double
+
+Dim Year_open As Double
+
+Dim Year_close As Double
+Dim Yearly_Change As Double
+
+
+Dim Total_stock_volume As Double
+Total_stock_volume = 0
+
+Dim ws As Worksheet
+
+'Keep track of the location for each ticker in the summary table
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+
+Range("i1").Value = "Ticker"
+Range("j1").Value = "Yearly Change in Price"
+Range("k1").Value = "Percent change"
+Range("l1").Value = "Total stock volume"
+
+
+'Get the count of the last row of the data set
+lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+For i = 2 To lastRow
+
+
+
+If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+    Ticker = Cells(i, 1).Value
+Range("I" & Summary_Table_Row).Value = Ticker
+Total_stock_volume = Total_stock_volume + Cells(i, 7)
+Range("L" & Summary_Table_Row).Value = Total_stock_volume
+Total_stock_volume = 0
+
+Year_open = Cells(i, 3).Value
+Year_close = Cells(i, 6).Value
+Yearly_Change = Year_close - Year_open
+Range("J" & Summary_Table_Row).Value = Yearly_Change
+
+Percent_change = ((Year_close - Year_open) / Year_open) * 100
+Range("K" & Summary_Table_Row).Value = Percent_change
+
+Summary_Table_Row = Summary_Table_Row + 1
+
+Else
+ Ticker = Range("I" & Summary_Table_Row).Value
+ Total_stock_volume = Total_stock_volume + Cells(i + 1, 7)
+Range("L" & Summary_Table_Row).Value = Total_stock_volume
+ 
+
+
+
+End If
+Next i
+
+
+
+
+
+
+End Sub
